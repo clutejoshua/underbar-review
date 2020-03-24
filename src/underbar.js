@@ -105,12 +105,48 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    if (typeof(isSorted) === 'function') {
+      iterator = isSorted;
+      isSorted = false;
+    }
 
+    var resultArr = [];
+    var boolValue = [];
+    if (iterator === undefined) {
+      for (var i = 0; i < array.length; i++) {
+        if (resultArr.indexOf(array[i]) === -1) {
+          resultArr.push(array[i])
+        }
+      }
+    } else {
+      for (var i = 0; i < array.length; i++) {
+        if (!boolValue.includes(iterator(array[i]))) {
+          boolValue.push(iterator(array[i]));
+          resultArr.push(array[i]);
+        }
+      }
+    }
+
+    return resultArr;
   };
 
 
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
+
+    if (Array.isArray(collection)) {
+      let newArr = [];
+      for (var i = 0; i < collection.length; i++) {
+        newArr.push(iterator(collection[i]));
+      }
+      return newArr;
+    } else {
+      let newArr1 = [];
+      for (let [key, value] of Object.entries(collection)) {
+        newArr1.push(iterator(value));
+      }
+      return newArr1;
+    }
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
@@ -155,6 +191,15 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      collection = collection.slice(1);
+    }
+    _.each(collection, function(item, index) {
+      accumulator = iterator(accumulator, item, index);
+    });
+
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
