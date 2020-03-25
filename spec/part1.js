@@ -376,7 +376,7 @@
       });
 
       it('should apply a function to every value in an array', function() {
-        var multiplyByTwo = function(val) {return val * 2};
+        var multiplyByTwo = function(val) { return val * 2; };
 
         expect(_.map([1, 2, 3], multiplyByTwo)).to.eql([2, 4, 6]);
       });
@@ -399,7 +399,7 @@
           { name: 'curly', age: 50 }
         ];
 
-        expect(_.pluck(people,'name')).to.eql(['moe', 'curly']);
+        expect(_.pluck(people, 'name')).to.eql(['moe', 'curly']);
       });
 
       it('should not modify the original array', function() {
